@@ -1,0 +1,28 @@
+version: '3.6'
+
+services:
+
+  redis:
+    image: redislabs/redisearch:latest
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - foo
+    volumes:
+      - redis-data/:/data
+
+  client:
+    build: client
+    environment: 
+        - REDIS_HOST=redis
+    depends_on:
+      - "redis" 
+    networks:
+      - foo
+
+networks:
+  foo:
+
+volumes:
+  redis-data:
